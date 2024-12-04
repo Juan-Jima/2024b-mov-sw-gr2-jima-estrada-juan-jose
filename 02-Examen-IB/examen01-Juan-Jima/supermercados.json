@@ -1,0 +1,1 @@
+[{"id":1,"nombre":"Tuti","numeroDeProductos":0,"productos":[{"id":0,"nombre":"Papas","precio":2.5,"fechaCaducidad":"05-05-2024","enStock":true},{"id":2,"nombre":"Jamon","precio":5.0,"fechaCaducidad":"05-02-2036","enStock":false}],"direccion":"Patria y 18 de Septiembre","telefono":"66666666"}]
