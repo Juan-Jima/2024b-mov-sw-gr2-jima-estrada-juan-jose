@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b0d60fb6-41fc-4aeb-bbf8-852365484ae9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/ACicloVida.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/BBaseDatosMemoria.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/BEntrenador.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/BListView.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/layout/activity_aciclo_vida.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/layout/activity_blist_view.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/menu/menu.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values-en/otros-valores-ingles.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values-en/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values-ldltr-port/texto.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values-en/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values-es/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/en_land.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/en_port.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/es_land.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/es_port.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/values-en-land.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/values-en-port.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/values-es-land.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Trabajo_Clase_001_Juan_Jima/app/src/main/res/values/values-es-port.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/java/com/example/gr2sw2024b_jjje/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../01-Android/app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="examen01-Juan-Jima" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2pgJnTn3wTgmTo9eWD5icFQ4awZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build examen01-Juan-Jima.executor": "Run",
+    "Kotlin.MainKt.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/HP/Documents/GitHub/2024b-mov-sw-gr2-jima-estrada-juan-jose/02-Examen-IB/examen01-Juan-Jima",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "C:/Users/HP/Documents/GitHub/2024b-mov-sw-gr2-jima-estrada-juan-jose/00-Kotlin/examen01-Juan-Jima/src/main/kotlin/Main.kt",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\HP\Documents\GitHub\2024b-mov-sw-gr2-jima-estrada-juan-jose\00-Kotlin\examen01-Juan-Jima\src\main\kotlin\org\example\org\example\main" />
+      <recent name="C:\Users\HP\Documents\GitHub\2024b-mov-sw-gr2-jima-estrada-juan-jose\00-Kotlin\examen01-Juan-Jima\src\modelos" />
+    </key>
+    <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="org.example.org.example.org.example.main" />
+      <recent name="org.example.org.example" />
+      <recent name="org.example" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="org.example.org.supermercado.model" />
+      <recent name="org.example.org.supermercado.dao" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b0d60fb6-41fc-4aeb-bbf8-852365484ae9" name="Changes" comment="" />
+      <created>1733181954190</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1733181954190</updated>
+      <workItem from="1733181954941" duration="5606000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

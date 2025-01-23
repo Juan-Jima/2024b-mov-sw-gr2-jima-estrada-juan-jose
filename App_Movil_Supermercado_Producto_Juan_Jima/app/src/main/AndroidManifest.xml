@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.app_movil_supermercado_producto_juan_jima">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.App_Movil_Supermercado_Producto_Juan_Jima"
+        tools:targetApi="31">
+
+        <!-- Declara todas las actividades con su nombre completo -->
+        <activity
+            android:name=".ActivityAgregarEditarProducto"
+            android:exported="false" />
+
+        <activity
+            android:name=".ActivityProductoList"
+            android:exported="false" />
+
+        <activity
+            android:name=".ActivitySupermercadoList"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ActivityAgregarEditarSupermercado"
+            android:exported="false" />
+
+    </application>
+
+</manifest>

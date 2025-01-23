@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "211999805159",
+    "project_id": "appmovil-supermercado-juanjima",
+    "storage_bucket": "appmovil-supermercado-juanjima.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211999805159:android:5dd5e9e8e3380645cc5c42",
+        "android_client_info": {
+          "package_name": "com.ejemplo.app_movil_supermercadoproducto_juan_jima"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW3xYF2HEhn6Yv_oN32PM_7kI0hixkQZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211999805159:android:380ec3a480e412f5cc5c42",
+        "android_client_info": {
+          "package_name": "com.example.app_movil_supermercado_producto_juan_jima"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW3xYF2HEhn6Yv_oN32PM_7kI0hixkQZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211999805159:android:93b7f3c7b7c2fa5acc5c42",
+        "android_client_info": {
+          "package_name": "supermercado.company.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW3xYF2HEhn6Yv_oN32PM_7kI0hixkQZ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

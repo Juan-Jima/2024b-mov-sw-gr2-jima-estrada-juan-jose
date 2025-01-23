@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="display_text" translatable="false">Test of End-Port</string>
+    //<color name="background_color">#FF0000</color> <!-- Rojo -->
+    <color name="text_color">#FFFFFF</color> <!-- Blanco -->
+</resources>

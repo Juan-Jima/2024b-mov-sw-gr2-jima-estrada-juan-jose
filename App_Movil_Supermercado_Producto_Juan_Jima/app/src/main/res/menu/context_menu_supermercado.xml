@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuVerProductos"
+        android:title="Ver productos" />
+    <item
+        android:id="@+id/menuEditarSupermercado"
+        android:title="Editar supermercado" />
+    <item
+        android:id="@+id/menuEliminarSupermercado"
+        android:title="Eliminar supermercado" />
+</menu>

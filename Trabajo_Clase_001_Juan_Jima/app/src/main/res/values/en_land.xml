@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="hola" translatable="false">hola</string>
+    //<color name="background_color">#00FF00</color> <!-- Rojo -->
+    <color name="text_color">#000000</color> <!-- Blanco -->
 </resources>

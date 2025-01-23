@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="display_text" translatable="false">Hola texto en español LAND-ES</string>
+    //<color name="background_color">#FF5733 </color> <!-- Rojo -->
+    <color name="text_color">#FFEB3B  </color> <!-- Blanco -->
 </resources>
