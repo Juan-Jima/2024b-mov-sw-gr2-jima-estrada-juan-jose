@@ -37,9 +37,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -104,6 +101,11 @@ class MainActivity : AppCompatActivity() {
             }
 
 
+        val bontonAuth = findViewById<Button>(R.id.btn_intent_firebase_ui)
+        bontonAuth
+            .setOnClickListener {
+                irActividad(HFirebaseUiAuth::class.java)
+            }
 
     }
     val callbackContenidoIntentImplicito =
@@ -131,17 +133,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
-
-
-
     fun irActividad(clase: Class<*>){
         startActivity(Intent(this, clase))
     }
-
-
 
 }

@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ECrudEntrenador">
 
+
     <Button
         android:id="@+id/btn_buscar_bdd"
         android:layout_width="wrap_content"
@@ -88,4 +89,5 @@
         app:layout_constraintEnd_toEndOf="@+id/input_nombre"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/input_nombre" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

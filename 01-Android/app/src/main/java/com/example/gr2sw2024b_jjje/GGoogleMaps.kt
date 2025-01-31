@@ -1,8 +1,10 @@
 package com.example.gr2sw2024b_jjje
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -35,6 +37,11 @@ class GGoogleMaps : AppCompatActivity() {
         }
         solicitarPermisos()
         inicializarLogicaMapa()
+        val botonCarolina = findViewById<Button>(R.id.btn_ir_carolina)
+        botonCarolina.setOnClickListener {
+            val carolina = LatLng(-0.18221288005854652, -78.48553955554578)
+            moverCamaraConZoom(carolina)
+        }
     }
     fun tengoPermisos():Boolean{
         val contexto = applicationContext
@@ -74,7 +81,6 @@ class GGoogleMaps : AppCompatActivity() {
         marcadorQuicentro.tag = titulo
         moverCamaraConZoom(quicentro)
     }
-
     fun anadirPolilinea(){
         with(mapa){
             val polilinea = mapa.addPolyline(
@@ -162,33 +168,5 @@ class GGoogleMaps : AppCompatActivity() {
         )
         snack.show()
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
