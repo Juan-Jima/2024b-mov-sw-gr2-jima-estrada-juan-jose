@@ -40,7 +40,7 @@ class ActivitySupermercadoList : AppCompatActivity() {
         listViewSupermercados.adapter = adapter
 
         listViewSupermercados.setOnItemClickListener { _, _, position, _ ->
-            selectedSupermercado = supermercados[position]
+            selectedSupermercado = controlador.listarSupermercados()[position]
             listViewSupermercados.showContextMenu()
         }
     }
@@ -68,6 +68,11 @@ class ActivitySupermercadoList : AppCompatActivity() {
                     Toast.makeText(this, "Supermercado eliminado", Toast.LENGTH_SHORT).show()
                     actualizarLista()
                 }
+            }
+            R.id.menuAbrirMapa -> {
+                val intent = Intent(this, Mapa::class.java)
+                intent.putExtra("supermercadoId", selectedSupermercado?.id)
+                startActivity(intent)
             }
         }
         return super.onContextItemSelected(item)

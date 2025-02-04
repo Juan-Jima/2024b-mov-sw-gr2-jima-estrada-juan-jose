@@ -1,9 +1,9 @@
 package com.example.app_movil_supermercado_producto_juan_jima
 
-class Producto(
+data class Producto(
     val id: Int,
-    var nombre: String,
-    var precio: Double,
-    var cantidad: Int,
-    val disponible: Boolean = true
+    val nombre: String,
+    val precio: Double,
+    val stock: Int, // Cambio de 'cantidad' a 'stock'
+    val supermercadoId: Int // Asegúrate de que esté aquí
 )

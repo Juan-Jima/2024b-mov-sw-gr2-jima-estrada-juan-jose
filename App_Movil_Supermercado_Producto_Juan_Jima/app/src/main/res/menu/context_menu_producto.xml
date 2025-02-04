@@ -2,8 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuEditarProducto"
-        android:title="Editar producto" />
+        android:title="Editar Producto"
+        android:icon="@android:drawable/ic_menu_edit"/>
     <item
         android:id="@+id/menuEliminarProducto"
-        android:title="Eliminar producto" />
+        android:title="Eliminar Producto"
+        android:icon="@android:drawable/ic_menu_delete"/>
 </menu>

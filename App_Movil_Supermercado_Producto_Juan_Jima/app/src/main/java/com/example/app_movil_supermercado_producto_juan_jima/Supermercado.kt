@@ -1,9 +1,10 @@
 package com.example.app_movil_supermercado_producto_juan_jima
 
-class Supermercado (
+data class Supermercado(
     val id: Int,
-    var nombre: String,
-    var direccion: String,
-    var abierto: Boolean,
-    var ingresosMensuales: Double
+    val nombre: String,
+    val direccion: String,
+    val activo: Boolean, // Este es el campo que debería ser Booleano
+    val ingresosMensuales: Double,
+    val ubicacion: String // La ubicación como String "latitud, longitud"
 )

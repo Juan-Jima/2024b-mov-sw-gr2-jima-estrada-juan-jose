@@ -7,36 +7,47 @@
 
     <TextView
         android:id="@+id/tvFormularioTitulo"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Formulario de Supermercado"
+        android:text="Agregar Supermercado"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"/>
 
     <EditText
         android:id="@+id/etNombreSupermercado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre del supermercado" />
+        android:hint="Nombre"
+        android:textSize="16sp"/>
 
     <EditText
         android:id="@+id/etDireccionSupermercado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Dirección" />
+        android:hint="Dirección"
+        android:textSize="16sp"/>
 
     <EditText
-        android:id="@+id/etTelefonoSupermercado"
+        android:id="@+id/etUbicacionSupermercado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Teléfono"
-        android:inputType="phone" />
+        android:hint="Ubicación"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/btnGuardarSupermercado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar" />
+        android:text="Guardar"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnObtenerUbicacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Obtener Ubicación"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
+
 </LinearLayout>

@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.app_movil_supermercado_producto_juan_jima">
 
+    <!--  Permisos de ubicación -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,17 +19,28 @@
         android:theme="@style/Theme.App_Movil_Supermercado_Producto_Juan_Jima"
         tools:targetApi="31">
 
-        <!-- Declara todas las actividades con su nombre completo -->
+        <!-- 🔑 API Key para Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBRvM28VhGoMHCdCNBWygI1f4T4i-utWPc" />
+
+        <!--  Actividad del Mapa corregida -->
+        <activity
+            android:name=".Mapa"
+            android:exported="false"
+            android:label="@string/title_activity_mapa" />
+
         <activity
             android:name=".ActivityAgregarEditarProducto"
             android:exported="false" />
-
         <activity
             android:name=".ActivityProductoList"
             android:exported="false" />
-
         <activity
             android:name=".ActivitySupermercadoList"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityAgregarEditarSupermercado"
             android:exported="false" />
 
         <activity
@@ -35,10 +52,5 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ActivityAgregarEditarSupermercado"
-            android:exported="false" />
-
     </application>
-
 </manifest>

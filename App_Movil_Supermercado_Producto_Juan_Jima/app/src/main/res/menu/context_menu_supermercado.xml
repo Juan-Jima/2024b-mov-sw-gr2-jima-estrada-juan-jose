@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menuVerProductos"
         android:title="Ver productos" />
@@ -9,4 +10,9 @@
     <item
         android:id="@+id/menuEliminarSupermercado"
         android:title="Eliminar supermercado" />
+    <item
+        android:id="@+id/menuAbrirMapa"
+        android:title="Ver ubicación"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="ifRoom"/>
 </menu>

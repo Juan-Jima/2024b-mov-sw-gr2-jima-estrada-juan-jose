@@ -7,9 +7,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-
-
-
 class ActivityAgregarEditarProducto : AppCompatActivity() {
     private lateinit var controlador: Controlador
     private lateinit var etNombreProducto: EditText
@@ -40,7 +37,7 @@ class ActivityAgregarEditarProducto : AppCompatActivity() {
             producto?.let {
                 etNombreProducto.setText(it.nombre)
                 etPrecioProducto.setText(it.precio.toString())
-                etStockProducto.setText(it.cantidad.toString())
+                etStockProducto.setText(it.stock.toString()) // Usamos 'stock' en lugar de 'cantidad'
             }
         }
 
@@ -52,16 +49,18 @@ class ActivityAgregarEditarProducto : AppCompatActivity() {
     private fun guardarProducto() {
         val nombre = etNombreProducto.text.toString()
         val precio = etPrecioProducto.text.toString().toDoubleOrNull()
-        val cantidad = etStockProducto.text.toString().toIntOrNull()
+        val stock = etStockProducto.text.toString().toIntOrNull() // Cambiado de 'cantidad' a 'stock'
 
-        if (nombre.isNotEmpty() && precio != null && cantidad != null) {
+        if (nombre.isNotEmpty() && precio != null && stock != null) {
             if (productoId != null) {
+                // Pasar 'supermercadoId' y actualizar el producto
                 controlador.actualizarProducto(
-                    Producto(productoId!!, nombre, precio, cantidad)
+                    Producto(productoId!!, nombre, precio, stock, supermercadoId) // Asegúrate de pasar el supermercadoId
                 )
                 Toast.makeText(this, "Producto actualizado", Toast.LENGTH_SHORT).show()
             } else {
-                controlador.crearProducto(supermercadoId, Producto(0, nombre, precio, cantidad))
+                // Pasar 'supermercadoId' y crear el producto
+                controlador.crearProducto(supermercadoId, Producto(0, nombre, precio, stock, supermercadoId)) // Asegúrate de pasar el supermercadoId
                 Toast.makeText(this, "Producto creado", Toast.LENGTH_SHORT).show()
             }
             finish()
