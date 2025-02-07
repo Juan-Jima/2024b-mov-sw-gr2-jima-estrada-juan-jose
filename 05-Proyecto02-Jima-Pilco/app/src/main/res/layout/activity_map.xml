@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@android:color/white">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- Título -->
-    <TextView
+    <!-- Fragmento del mapa -->
+
+    <!-- Botón para confirmar ubicación -->
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnConfirmLocation"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mapa"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:paddingBottom="16dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_save"
+        app:backgroundTint="@color/teal_200"
+        android:contentDescription="Confirmar ubicación"/>
 
-    <!-- Contenedor con borde para el mapa -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        app:cardElevation="6dp"
-        app:cardCornerRadius="12dp"
-        android:background="@android:color/white">
-
-        <fragment
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            class="com.google.android.gms.maps.SupportMapFragment"/>
-    </androidx.cardview.widget.CardView>
-
-    <!-- Footer con botón -->
+    <!-- Botón para cerrar mapa -->
     <Button
-        android:id="@+id/closeMapButton"
-        android:layout_width="match_parent"
+        android:id="@+id/btnCloseMap"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cerrar mapa"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/teal_200"/>
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Cerrar Mapa"
+        android:textColor="@android:color/white"
+        app:backgroundTint="@color/darker_gray" />
+</RelativeLayout>

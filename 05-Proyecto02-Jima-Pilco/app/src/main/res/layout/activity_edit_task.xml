@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/very_light_purple">
+
+    <!-- Título de la pantalla -->
+    <TextView
+        android:id="@+id/tvEditTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar Tarea"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="12dp"/>
+
+    <!-- Campo: Título -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Título de la tarea">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTitleInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo: Descripción -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editDescInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo: Fecha -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha (dd/MM/yyyy)">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editDateInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Botón para seleccionar ubicación -->
+    <Button
+        android:id="@+id/btnUpdateLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actualizar Ubicación"
+        android:drawableStart="@android:drawable/ic_menu_mylocation"
+        android:padding="12dp"
+        android:layout_marginTop="8dp"
+        app:backgroundTint="@color/teal_200"/>
+
+    <!-- Botón para actualizar tarea -->
+    <Button
+        android:id="@+id/btnUpdateTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actualizar Tarea"
+        android:padding="12dp"
+        android:layout_marginTop="16dp"
+        app:backgroundTint="@color/black"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

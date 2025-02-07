@@ -1,98 +1,108 @@
 package com.example.agendaestudiantil
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
+import com.google.android.material.textfield.TextInputEditText
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var taskController: TaskController
     private lateinit var taskAdapter: TaskAdapter
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
-    private var selectedTask: Task? = null
-
-    // Lanzador de actividad para el mapa
-    private val mapActivityLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val location = result.data?.getStringExtra("selectedLocation")
-                if (location != null && selectedTask != null) {
-                    taskController.updateTaskLocation(selectedTask!!, location)
-                    taskAdapter.updateList(taskController.getAllTasks())
-                    Toast.makeText(this, "Ubicación guardada en la tarea", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    private lateinit var searchInput: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Inicializar el controlador de tareas
         taskController = TaskController(this)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        val addButton: FloatingActionButton = findViewById(R.id.addButton)
-        val titleInput: EditText = findViewById(R.id.titleInput)
-        val descInput: EditText = findViewById(R.id.descInput)
-        val dateInput: EditText = findViewById(R.id.dateInput)
-        val searchInput: EditText = findViewById(R.id.searchInput)
-        val mapButton: FloatingActionButton = findViewById(R.id.mapButton) // ✅ CORRECTO
+        // Configurar RecyclerView, botones y búsqueda
+        setupRecyclerView()
+        setupButtons()
+        setupSearch()
+    }
 
+    /**
+     * Configura el RecyclerView y su adaptador.
+     */
+    private fun setupRecyclerView() {
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        taskAdapter = TaskAdapter(taskController.getAllTasks(), DBHelper(this))
+        taskAdapter = TaskAdapter(taskController.getAllTasks().toMutableList(), taskController)
         recyclerView.adapter = taskAdapter
 
-        dateInput.setOnClickListener { showDatePicker(dateInput) }
-
-        addButton.setOnClickListener {
-            if (taskController.addTask(titleInput.text.toString(), descInput.text.toString(), dateInput.text.toString())) {
-                taskAdapter.updateList(taskController.getAllTasks())
-                titleInput.text.clear()
-                descInput.text.clear()
-                dateInput.text.clear()
-                Toast.makeText(this, "Tarea añadida", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Ingrese título y fecha", Toast.LENGTH_SHORT).show()
-            }
+        // Evento de pulsación larga para mostrar opciones (editar, eliminar, ver ubicación)
+        taskAdapter.setOnTaskLongClickListener { task ->
+            showTaskOptions(task)
         }
+    }
 
+    /**
+     * Configura los botones flotantes de agregar y buscar.
+     */
+    private fun setupButtons() {
+        val addButton: FloatingActionButton = findViewById(R.id.addButton)
+        val searchButton: FloatingActionButton = findViewById(R.id.searchButton)
+
+        addButton.setOnClickListener { openAddTask() }
+        searchButton.setOnClickListener { openSearchTask() }
+    }
+
+    /**
+     * Configura la búsqueda de tareas en tiempo real.
+     */
+    private fun setupSearch() {
+        searchInput = findViewById(R.id.searchInput)
         searchInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                taskAdapter.updateList(taskController.searchTasks(s.toString()))
+                val filteredTasks = taskController.searchTasks(s.toString())
+                taskAdapter.updateList(filteredTasks.toMutableList())
             }
         })
-
-        mapButton.setOnClickListener { openMap() }
     }
 
-    private fun showDatePicker(dateInput: EditText) {
-        val calendar = Calendar.getInstance()
-        val datePicker = DatePickerDialog(this, { _, year, month, day ->
-            val selectedDate = Calendar.getInstance()
-            selectedDate.set(year, month, day)
-            dateInput.setText(dateFormat.format(selectedDate.time))
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-        datePicker.show()
+    /**
+     * Abre `AddTaskActivity.kt` para agregar una nueva tarea.
+     */
+    private fun openAddTask() {
+        val intent = Intent(this, AddTaskActivity::class.java)
+        startActivity(intent)
     }
 
-    private fun openMap() {
-        val intent = Intent(this, MapActivity::class.java)
-        mapActivityLauncher.launch(intent)
+    /**
+     * Abre `SearchTaskActivity.kt` para búsqueda avanzada de tareas.
+     */
+    private fun openSearchTask() {
+        val intent = Intent(this, SearchTaskActivity::class.java)
+        startActivity(intent)
     }
+
+    /**
+     * Muestra un `BottomSheetDialog` con opciones de tarea al hacer una pulsación larga.
+     */
+    private fun showTaskOptions(task: Task) {
+        val bottomSheetDialog = TaskOptionsBottomSheet(
+            task = task,
+            context = this,
+            onTaskUpdated = {
+                taskAdapter.updateList(taskController.getAllTasks().toMutableList())
+                Toast.makeText(this, "Tarea actualizada", Toast.LENGTH_SHORT).show()
+            }
+        )
+        bottomSheetDialog.show(supportFragmentManager, "TaskOptionsBottomSheet")
+    }
+
+
 }

@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
-        <!-- Actividad principal -->
+        <!-- Actividad Principal -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -36,6 +36,30 @@
             android:name=".MapActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
+
+        <!-- Actividad para Agregar Tareas -->
+        <activity
+            android:name=".AddTaskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Actividad para Buscar Tareas -->
+        <activity
+            android:name=".SearchTaskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Actividad para Editar Tareas -->
+        <activity
+            android:name=".EditTaskActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Bottom Sheet para Opciones de Tareas -->
+        <activity
+            android:name=".TaskOptionsBottomSheet"
+            android:exported="false"
+            android:theme="@style/Theme.BottomSheetDialog"/>
 
         <!-- API de Google Maps -->
         <meta-data
