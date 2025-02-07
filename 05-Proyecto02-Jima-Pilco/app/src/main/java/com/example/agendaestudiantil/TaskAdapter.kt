@@ -1,22 +1,31 @@
 package com.example.agendaestudiantil
 
-import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.view.menu.MenuBuilder
-import android.widget.PopupMenu
-import java.util.*
+import java.util.Locale
 
-class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper: DBHelper) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(), Filterable {
+class TaskAdapter(private var taskList: MutableList<Task>, private val taskController: TaskController) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(), Filterable {
+
     private var filteredTaskList: MutableList<Task> = taskList
+    private var onTaskLongClickListener: ((Task) -> Unit)? = null
 
+    /**
+     * Actualiza la lista de tareas de forma eficiente.
+     */
     fun updateList(newList: MutableList<Task>) {
-        taskList = newList
-        filteredTaskList = newList
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(TaskDiffCallback(filteredTaskList, newList))
+        filteredTaskList.clear()
+        filteredTaskList.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -30,40 +39,50 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
 
     override fun getItemCount(): Int = filteredTaskList.size
 
+    /**
+     * Filtra la lista de tareas por título.
+     */
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint?.toString()?.lowercase(Locale.getDefault())
-                filteredTaskList = if (query.isNullOrEmpty()) {
+                val query = constraint?.toString()?.lowercase(Locale.getDefault()).orEmpty()
+                val filteredList = if (query.isEmpty()) {
                     taskList
                 } else {
-                    taskList.filter { it.title.lowercase(Locale.getDefault()).contains(query) }.toMutableList()
+                    taskList.filter { it.title.lowercase(Locale.getDefault()).contains(query) }
+                        .toMutableList()
                 }
-                val results = FilterResults()
-                results.values = filteredTaskList
-                return results
+                return FilterResults().apply { values = filteredList }
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredTaskList = results?.values as MutableList<Task>
-                notifyDataSetChanged()
+                updateList(results?.values as MutableList<Task>)
             }
         }
+    }
+
+    /**
+     * Establece un listener para detectar pulsaciones largas en las tareas.
+     */
+    fun setOnTaskLongClickListener(listener: (Task) -> Unit) {
+        onTaskLongClickListener = listener
     }
 
     inner class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val titleView: TextView = view.findViewById(R.id.taskTitle)
         private val descView: TextView = view.findViewById(R.id.taskDesc)
         private val dateView: TextView = view.findViewById(R.id.taskDate)
+        private val locationIcon: ImageView = view.findViewById(R.id.locationIcon)
 
         init {
-            // Al hacer clic en cualquier parte del LinearLayout, se muestra el menú con opciones
-            view.setOnClickListener {
+            // Evento de pulsación larga para mostrar opciones
+            view.setOnLongClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val task = filteredTaskList[position]
-                    showOptionsMenu(task)
+                    onTaskLongClickListener?.invoke(task)
                 }
+                true
             }
         }
 
@@ -71,65 +90,39 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
             titleView.text = task.title
             descView.text = task.description
             dateView.text = task.date
-        }
 
-        private fun showOptionsMenu(task: Task) {
-            val context = itemView.context
-            val popupMenu = PopupMenu(context, itemView)
-
-            // Cargar las opciones del menú
-            popupMenu.menuInflater.inflate(R.menu.task_options_menu, popupMenu.menu)
-
-            // Manejo de la opción de editar
-            popupMenu.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.menu_edit -> {
-                        showEditDialog(task)
-                        true
-                    }
-                    R.id.menu_delete -> {
-                        dbHelper.deleteTask(task)
-                        taskList.remove(task)
-                        updateList(taskList)
-                        true
-                    }
-                    else -> false
+            // Mostrar el icono si la tarea tiene ubicación
+            if (task.location.isNullOrEmpty()) {
+                locationIcon.visibility = View.GONE
+            } else {
+                locationIcon.visibility = View.VISIBLE
+                locationIcon.setOnClickListener {
+                    val context = itemView.context
+                    val intent = Intent(context, MapActivity::class.java)
+                    intent.putExtra("taskId", task.id)
+                    intent.putExtra("location", task.location)
+                    context.startActivity(intent)
                 }
             }
+        }
+    }
 
-            popupMenu.show() // Mostrar el menú emergente
+    /**
+     * Clase de utilidad para comparar listas de tareas en tiempo real.
+     */
+    class TaskDiffCallback(
+        private val oldList: List<Task>,
+        private val newList: List<Task>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
         }
 
-        private fun showEditDialog(task: Task) {
-            val builder = AlertDialog.Builder(itemView.context)
-            builder.setTitle("Editar Tarea")
-            val view = LayoutInflater.from(itemView.context).inflate(R.layout.dialog_edit_task, null)
-
-            val titleInput = view.findViewById<EditText>(R.id.editTitleInput)
-            val descInput = view.findViewById<EditText>(R.id.editDescInput)
-            val dateInput = view.findViewById<EditText>(R.id.editDateInput)
-
-            titleInput.setText(task.title)
-            descInput.setText(task.description)
-            dateInput.setText(task.date)
-
-            builder.setView(view)
-            val dialog = builder.create()
-
-            view.findViewById<Button>(R.id.btnUpdate).setOnClickListener {
-                task.title = titleInput.text.toString()
-                task.description = descInput.text.toString()
-                task.date = dateInput.text.toString()
-                dbHelper.updateTask(task)
-                updateList(dbHelper.getAllTasks().toMutableList())
-                dialog.dismiss()  // Cierra el diálogo después de actualizar
-            }
-
-            view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
-                dialog.dismiss()  // Cierra el diálogo sin hacer cambios
-            }
-
-            dialog.show()
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 }

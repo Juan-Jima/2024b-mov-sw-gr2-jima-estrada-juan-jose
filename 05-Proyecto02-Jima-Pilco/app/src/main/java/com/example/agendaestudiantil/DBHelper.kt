@@ -5,62 +5,166 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.agendaestudiantil.Task
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "TasksDB", null, 1) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "TasksDB", null, 3) {
 
-    // Método onCreate para crear la tabla
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("CREATE TABLE tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, date TEXT)")
+        db.execSQL(
+            """
+            CREATE TABLE tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                title TEXT NOT NULL, 
+                description TEXT, 
+                date TEXT NOT NULL, 
+                location TEXT DEFAULT NULL
+            )
+            """.trimIndent()
+        )
     }
 
-    // Método onUpgrade para manejar cambios de versión de la base de datos
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE tasks ADD COLUMN location TEXT DEFAULT NULL")
+        }
+    }
 
-    // Insertar una nueva tarea en la base de datos
-    fun insertTask(task: Task) {
+    /**
+     * Insertar una nueva tarea en la base de datos.
+     */
+    fun insertTask(task: Task): Boolean {
         val db = writableDatabase
-        val values = ContentValues()
-        values.put("title", task.title)
-        values.put("description", task.description)
-        values.put("date", task.date)
-        db.insert("tasks", null, values)
+        return try {
+            db.beginTransaction()
+            val values = ContentValues().apply {
+                put("title", task.title)
+                put("description", task.description)
+                put("date", task.date)
+                put("location", task.location)
+            }
+            val success = db.insert("tasks", null, values) > 0
+            db.setTransactionSuccessful()
+            success
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
     }
 
-    // Obtener todas las tareas de la base de datos
+    /**
+     * Obtener todas las tareas ordenadas por fecha.
+     */
     fun getAllTasks(): List<Task> {
         val taskList = mutableListOf<Task>()
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM tasks", null)
-        if (cursor.moveToFirst()) {
-            do {
+        val cursor: Cursor? = db.rawQuery("SELECT * FROM tasks ORDER BY date ASC", null)
+
+        cursor?.use {
+            while (it.moveToNext()) {
                 val task = Task(
-                    cursor.getInt(0), // id (índice 0)
-                    cursor.getString(1), // title (índice 1)
-                    cursor.getString(2), // description (índice 2)
-                    cursor.getString(3)  // date (índice 3)
+                    id = it.getInt(0),
+                    title = it.getString(1),
+                    description = it.getString(2),
+                    date = it.getString(3),
+                    location = it.getString(4) // Recuperar ubicación
                 )
                 taskList.add(task)
-            } while (cursor.moveToNext())
+            }
         }
-        cursor.close()
+        db.close()
         return taskList
     }
 
-    // Eliminar una tarea por su id
-    fun deleteTask(task: Task) {
-        val db = writableDatabase
-        db.delete("tasks", "id = ?", arrayOf(task.id.toString()))
+    /**
+     * Buscar tareas por título.
+     */
+    fun searchTasks(query: String): List<Task> {
+        val taskList = mutableListOf<Task>()
+        val db = readableDatabase
+        val cursor: Cursor? = db.rawQuery("SELECT * FROM tasks WHERE title LIKE ? ORDER BY date ASC", arrayOf("%$query%"))
+
+        cursor?.use {
+            while (it.moveToNext()) {
+                val task = Task(
+                    id = it.getInt(0),
+                    title = it.getString(1),
+                    description = it.getString(2),
+                    date = it.getString(3),
+                    location = it.getString(4) // Recuperar ubicación
+                )
+                taskList.add(task)
+            }
+        }
         db.close()
+        return taskList
     }
 
-    // Actualizar una tarea en la base de datos
-    fun updateTask(task: Task) {
+    /**
+     * Eliminar una tarea por su ID.
+     */
+    fun deleteTask(taskId: Int): Boolean {
         val db = writableDatabase
-        val values = ContentValues()
-        values.put("title", task.title)
-        values.put("description", task.description)
-        values.put("date", task.date)
-        db.update("tasks", values, "id = ?", arrayOf(task.id.toString()))
-        db.close()
+        return try {
+            db.beginTransaction()
+            val success = db.delete("tasks", "id = ?", arrayOf(taskId.toString())) > 0
+            db.setTransactionSuccessful()
+            success
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
+    }
+
+    /**
+     * Actualizar una tarea en la base de datos.
+     */
+    fun updateTask(task: Task): Boolean {
+        val db = writableDatabase
+        return try {
+            db.beginTransaction()
+            val values = ContentValues().apply {
+                put("title", task.title)
+                put("description", task.description)
+                put("date", task.date)
+                put("location", task.location)
+            }
+            val success = db.update("tasks", values, "id = ?", arrayOf(task.id.toString())) > 0
+            db.setTransactionSuccessful()
+            success
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
+    }
+
+    /**
+     * Actualizar solo la ubicación de una tarea.
+     */
+    fun updateTaskLocation(taskId: Int, location: String): Boolean {
+        val db = writableDatabase
+        return try {
+            db.beginTransaction()
+            val values = ContentValues().apply {
+                put("location", location)
+            }
+            val success = db.update("tasks", values, "id = ?", arrayOf(taskId.toString())) > 0
+            db.setTransactionSuccessful()
+            success
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        } finally {
+            db.endTransaction()
+            db.close()
+        }
     }
 }
