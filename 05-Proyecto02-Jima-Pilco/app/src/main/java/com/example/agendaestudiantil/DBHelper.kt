@@ -15,7 +15,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "TasksDB", null, 1)
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "title TEXT NOT NULL, " +
                     "description TEXT, " +
-                    "date TEXT NOT NULL)"
+                    "date TEXT NOT NULL, " +
+                    "location TEXT)" // Nueva columna para almacenar coordenadas
         )
     }
 
@@ -33,6 +34,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "TasksDB", null, 1)
                 put("title", task.title)
                 put("description", task.description)
                 put("date", task.date)
+                put("location", task.location) // Guardamos la ubicación
             }
             db.insert("tasks", null, values) > 0
         } catch (e: Exception) {
@@ -116,6 +118,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "TasksDB", null, 1)
                 put("title", task.title)
                 put("description", task.description)
                 put("date", task.date)
+                put("location", task.location) // Guardamos la ubicación
             }
             db.update("tasks", values, "id = ?", arrayOf(task.id.toString())) > 0
         } catch (e: Exception) {

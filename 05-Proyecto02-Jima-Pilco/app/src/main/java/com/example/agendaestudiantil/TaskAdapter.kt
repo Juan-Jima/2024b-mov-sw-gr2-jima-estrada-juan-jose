@@ -1,6 +1,7 @@
 package com.example.agendaestudiantil
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
         private val titleView: TextView = view.findViewById(R.id.taskTitle)
         private val descView: TextView = view.findViewById(R.id.taskDesc)
         private val dateView: TextView = view.findViewById(R.id.taskDate)
+        private val locationIcon: ImageView = view.findViewById(R.id.locationIcon) // ← Añadir esta línea
 
         init {
             view.setOnClickListener {
@@ -71,7 +73,21 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
             titleView.text = task.title
             descView.text = task.description
             dateView.text = task.date
+
+            // Mostrar el icono si la tarea tiene ubicación
+            if (task.location.isNullOrEmpty()) {
+                locationIcon.visibility = View.GONE
+            } else {
+                locationIcon.visibility = View.VISIBLE
+                locationIcon.setOnClickListener {
+                    val context = itemView.context
+                    val intent = Intent(context, MapActivity::class.java)
+                    intent.putExtra("location", task.location)
+                    context.startActivity(intent)
+                }
+            }
         }
+
 
         private fun showOptionsMenu(task: Task) {
             val context = itemView.context

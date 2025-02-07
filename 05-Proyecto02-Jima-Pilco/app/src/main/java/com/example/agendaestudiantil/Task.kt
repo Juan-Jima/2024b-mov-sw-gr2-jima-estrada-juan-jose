@@ -9,7 +9,7 @@ data class Task(
     var title: String, // Título de la tarea
     var description: String, // Descripción de la tarea
     var date: String, // Fecha de la tarea (Formato dd/MM/yyyy)
-    var location: String? = null // Ubicación opcional (Ejemplo: "-0.1807, -78.4688")
+    var location: String? = null
 ) : Parcelable {
 
     // Constructor para Parcelable

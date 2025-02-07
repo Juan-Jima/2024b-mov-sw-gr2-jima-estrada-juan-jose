@@ -36,23 +36,30 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Ubicación predeterminada (Quito, Ecuador)
         val defaultLocation = LatLng(-0.1807, -78.4688)
-        mMap.addMarker(MarkerOptions().position(defaultLocation).title("Ubicación predeterminada"))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, 15f))
 
-        // Habilitar clics en el mapa para seleccionar ubicaciones
+        val taskLocation = intent.getStringExtra("location")
+        if (taskLocation != null) {
+            val latLng = taskLocation.split(",").map { it.toDouble() }
+            val markerPosition = LatLng(latLng[0], latLng[1])
+            mMap.addMarker(MarkerOptions().position(markerPosition).title("Ubicación guardada"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerPosition, 15f))
+        }
+
+        // Permitir seleccionar ubicación
         mMap.setOnMapClickListener { latLng ->
-            // Si ya hay un marcador seleccionado, lo eliminamos
             selectedMarker?.remove()
+            selectedMarker = mMap.addMarker(MarkerOptions().position(latLng).title("Ubicación seleccionada"))
 
-            // Agregamos un nuevo marcador en la ubicación seleccionada
-            selectedMarker = mMap.addMarker(
-                MarkerOptions().position(latLng).title("Ubicación seleccionada")
-            )
-
-            // Mostrar un mensaje con la latitud y longitud
-            Toast.makeText(this, "Ubicación seleccionada: ${latLng.latitude}, ${latLng.longitude}", Toast.LENGTH_SHORT).show()
+            val latLngString = "${latLng.latitude},${latLng.longitude}"
+            val resultIntent = Intent().apply {
+                putExtra("selectedLocation", latLngString)
+            }
+            setResult(RESULT_OK, resultIntent)
+            Toast.makeText(this, "Ubicación guardada", Toast.LENGTH_SHORT).show()
+            finish() // ✅ Cierra la actividad automáticamente
         }
     }
+
 }
