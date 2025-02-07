@@ -1,18 +1,19 @@
 package com.example.agendaestudiantil
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import android.app.DatePickerDialog
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var dbHelper: DBHelper
     private lateinit var taskAdapter: TaskAdapter
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Inicialización de vistas
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         val addButton: Button = findViewById(R.id.addButton)
         val titleInput: EditText = findViewById(R.id.titleInput)
@@ -29,14 +31,15 @@ class MainActivity : AppCompatActivity() {
         val searchInput: EditText = findViewById(R.id.searchInput)
         val mapButton: Button = findViewById(R.id.mapButton)
 
+        // Inicializar Base de Datos
         dbHelper = DBHelper(this)
 
-        // Cargar tareas desde la base de datos
-        val tasks = dbHelper.getAllTasks().toMutableList() // Convertir la lista a MutableList
-        taskAdapter = TaskAdapter(tasks, dbHelper) // Inicializar con la lista mutable y el dbHelper
+        // Configurar RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
+        taskAdapter = TaskAdapter(dbHelper.getAllTasks().toMutableList(), dbHelper)
         recyclerView.adapter = taskAdapter
 
+        // Seleccionar fecha con DatePickerDialog
         dateInput.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(this, { _, year, month, day ->
@@ -47,31 +50,39 @@ class MainActivity : AppCompatActivity() {
             datePicker.show()
         }
 
+        // Agregar una nueva tarea
         addButton.setOnClickListener {
-            val title = titleInput.text.toString()
-            val desc = descInput.text.toString()
-            val date = dateInput.text.toString()
+            val title = titleInput.text.toString().trim()
+            val desc = descInput.text.toString().trim()
+            val date = dateInput.text.toString().trim()
 
             if (title.isNotEmpty() && date.isNotEmpty()) {
-                val task = Task(title = title, description = desc, date = date) // Correctly passing parameters
-                dbHelper.insertTask(task)
-                taskAdapter.updateList(dbHelper.getAllTasks().toMutableList()) // Actualizar la lista después de agregar
-                titleInput.text.clear()
-                descInput.text.clear()
-                dateInput.text.clear()
+                val task = Task(title = title, description = desc, date = date)
+                if (dbHelper.insertTask(task)) {
+                    taskAdapter.updateList(dbHelper.getAllTasks().toMutableList()) // Actualizar la lista
+                    titleInput.text.clear()
+                    descInput.text.clear()
+                    dateInput.text.clear()
+                    Toast.makeText(this, "Tarea añadida", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Error al añadir la tarea", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Ingrese título y fecha", Toast.LENGTH_SHORT).show()
             }
         }
 
-        searchInput.addTextChangedListener(object : android.text.TextWatcher {
-            override fun afterTextChanged(s: android.text.Editable?) {}
+        // Búsqueda en tiempo real
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                taskAdapter.filter.filter(s)
+                val filteredTasks = dbHelper.searchTasks(s.toString())
+                taskAdapter.updateList(filteredTasks.toMutableList())
             }
         })
 
+        // Botón para ver el mapa
         mapButton.setOnClickListener {
             startActivity(Intent(this, MapActivity::class.java))
         }

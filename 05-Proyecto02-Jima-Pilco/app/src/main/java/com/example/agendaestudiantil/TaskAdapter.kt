@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.appcompat.view.menu.MenuBuilder
 import android.widget.PopupMenu
 import java.util.*
 
-class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper: DBHelper) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(), Filterable {
+class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper: DBHelper) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>(), Filterable {
+
     private var filteredTaskList: MutableList<Task> = taskList
 
     fun updateList(newList: MutableList<Task>) {
-        taskList = newList
-        filteredTaskList = newList
-        notifyDataSetChanged()
+        val diffResult = DiffUtil.calculateDiff(TaskDiffCallback(filteredTaskList, newList))
+        filteredTaskList.clear()
+        filteredTaskList.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
@@ -33,20 +36,18 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val query = constraint?.toString()?.lowercase(Locale.getDefault())
-                filteredTaskList = if (query.isNullOrEmpty()) {
+                val query = constraint?.toString()?.lowercase(Locale.getDefault()).orEmpty()
+                val filteredList = if (query.isEmpty()) {
                     taskList
                 } else {
-                    taskList.filter { it.title.lowercase(Locale.getDefault()).contains(query) }.toMutableList()
+                    taskList.filter { it.title.lowercase(Locale.getDefault()).contains(query) }
+                        .toMutableList()
                 }
-                val results = FilterResults()
-                results.values = filteredTaskList
-                return results
+                return FilterResults().apply { values = filteredList }
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filteredTaskList = results?.values as MutableList<Task>
-                notifyDataSetChanged()
+                updateList(results?.values as MutableList<Task>)
             }
         }
     }
@@ -57,7 +58,6 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
         private val dateView: TextView = view.findViewById(R.id.taskDate)
 
         init {
-            // Al hacer clic en cualquier parte del LinearLayout, se muestra el menú con opciones
             view.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -76,11 +76,8 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
         private fun showOptionsMenu(task: Task) {
             val context = itemView.context
             val popupMenu = PopupMenu(context, itemView)
-
-            // Cargar las opciones del menú
             popupMenu.menuInflater.inflate(R.menu.task_options_menu, popupMenu.menu)
 
-            // Manejo de la opción de editar
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_edit -> {
@@ -88,16 +85,13 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
                         true
                     }
                     R.id.menu_delete -> {
-                        dbHelper.deleteTask(task)
-                        taskList.remove(task)
-                        updateList(taskList)
+                        showDeleteConfirmation(task)
                         true
                     }
                     else -> false
                 }
             }
-
-            popupMenu.show() // Mostrar el menú emergente
+            popupMenu.show()
         }
 
         private fun showEditDialog(task: Task) {
@@ -120,16 +114,54 @@ class TaskAdapter(private var taskList: MutableList<Task>, private val dbHelper:
                 task.title = titleInput.text.toString()
                 task.description = descInput.text.toString()
                 task.date = dateInput.text.toString()
-                dbHelper.updateTask(task)
-                updateList(dbHelper.getAllTasks().toMutableList())
-                dialog.dismiss()  // Cierra el diálogo después de actualizar
+
+                if (dbHelper.updateTask(task)) {
+                    updateList(dbHelper.getAllTasks().toMutableList())
+                    Toast.makeText(itemView.context, "Tarea actualizada", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(itemView.context, "Error al actualizar tarea", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
             }
 
             view.findViewById<Button>(R.id.btnCancel).setOnClickListener {
-                dialog.dismiss()  // Cierra el diálogo sin hacer cambios
+                dialog.dismiss()
             }
 
             dialog.show()
+        }
+
+        private fun showDeleteConfirmation(task: Task) {
+            val context = itemView.context
+            AlertDialog.Builder(context)
+                .setTitle("Eliminar Tarea")
+                .setMessage("¿Seguro que deseas eliminar esta tarea?")
+                .setPositiveButton("Sí") { _, _ ->
+                    if (dbHelper.deleteTask(task.id ?: 0)) {
+                        updateList(dbHelper.getAllTasks().toMutableList())
+                        Toast.makeText(context, "Tarea eliminada", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(context, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancelar", null)
+                .show()
+        }
+    }
+
+    class TaskDiffCallback(
+        private val oldList: List<Task>,
+        private val newList: List<Task>
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
+        override fun getNewListSize() = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 }

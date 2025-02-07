@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clave de API de Google Maps -->
+    <string name="google_maps_key" translatable="false">
+        AIzaSyBRvM28VhGoMHCdCNBWygI1f4T4i-utWPc
+    </string>
+</resources>
